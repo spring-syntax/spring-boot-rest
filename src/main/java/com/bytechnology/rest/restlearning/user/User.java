@@ -1,10 +1,10 @@
 package com.bytechnology.rest.restlearning.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.bytechnology.rest.restlearning.post.Post;
+
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class User {
@@ -17,7 +17,10 @@ public class User {
 
     private LocalDate birthday;
 
-    private User() {
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Post.class)
+    private List<Post> posts;
+
+    protected User() {
     }
 
     public User(String name, LocalDate birthday) {
@@ -39,5 +42,9 @@ public class User {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public int getId() {
+        return id;
     }
 }
