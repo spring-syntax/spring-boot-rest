@@ -8,24 +8,31 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+class UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    public List<User> findAll(){
+    List<User> findAll(){
         return userRepository.findAll();
     }
 
-    public User findUser(int id){
+    User findUser(int id){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent())
             return  user.get();
         throw new RestException("User not exists!");
     }
 
-    public boolean save(User user) {
+    boolean save(User user) {
         User savedUser = userRepository.save(user);
         return savedUser!=null;
     }
+
+    void deleteUserById(int id){
+        if(!userRepository.findById(id).isPresent())
+            throw new RestException("User not exists!");
+        userRepository.deleteById(id);
+    }
+
 }
